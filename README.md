@@ -2,7 +2,7 @@
 # PBP A - 2206028503
 
 ## Link Aplikasi 
-Link Adaptable: -
+Link Adaptable: [Madanshop](https://madanshop.adaptable.app/main/)
 
 ## Jawaban Soal
 
