@@ -1,71 +1,156 @@
 {% extends 'base.html' %}
+{% load static %} 
 
 {% block content %}
-    <h1>{{ appname }}</h1>
+<style>
+    .last-row {
+        background-color: #BF30A3 !important;
+    }
 
-    <h5>Name:</h5>
-    <p>{{ name }}</p>
+    .last-col-row{
+        background-color: #FFF5E0 !important;
+    }
+</style>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+        <a class="navbar-brand text fs-4" href="#"><img src="{% static 'images/logomm.png' %}" style="width: 10%; margin-right: 0.8rem;">Madanshop</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse d-flex justify-content-center" id="navbarNavDropdown">
+                <div class="nav-item dropdown ms-auto d-flex justify-content-center" style="margin-right: 3rem;">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    {{ name }} - {{ class }}
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="{% url 'main:logout' %}">
+                                <button  class="btn">
+                                    Logout
+                                </button>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-    <h5>Class:</h5>
-    <p>{{ class }}</p>
-
-    <table>
-        <tr>
-            <th>Name</th>
-            <th>Amount</th>
-            <th>Price</th>
-            <th>Description</th>
-            <th>Date Added</th>
-        </tr>
+    {% if not products%}
+    <div class="mx-3 my-4" style="min-height: 76vh;">
+        <div class="text-center mx-3 my-4"> 
+            <h3> No Product Yet! </h3>
+        </div>
+        <br>
+        <div class="text-center">
+            <a href="{% url 'main:create_product' %}">
+                <button class="btn btn-outline-dark btn-lg">
+                    Add Your First Product Here!
+                </button>
+            </a>
+        </div>
+    </div >
+    {% endif %}
     
-        {% comment %} Berikut cara memperlihatkan data produk di bawah baris ini {% endcomment %}
-    
-        {% for product in products %}
+    {% if products %}
+    <div class = "mx-3 my-4" style="min-height: 76vh;">    
+        <h3 class="text-center" style="margin: 2rem;"> Products List </h3>
+        <table class="table table-striped">
             <tr>
-                <td>{{product.name}}</td>
-                <td> {{product.amount}}</td>
-                <td>{{product.price}}</td>
-                <td>{{product.description}}</td>
-                <td>{{product.date_added}}</td>
-                <td> 
+                <th class="text-center">Name</th>
+                <th class="text-center">Amount</th>
+                <th class="text-center">Price</th>
+                <th class="text-center">Description</th>
+                <th class="text-center">Date Added</th>
+                <th class="text-center">Action</th>
+            </tr>
+            
+            {% comment %} Berikut cara memperlihatkan data produk di bawah baris ini {% endcomment %}
+            
+            {% for product in products %}
+            {% if forloop.last %}
+            <tr class="last-row">
+            {% else %}
+            <tr>
+            {% endif %}
+                {% if forloop.last %}
+                <td class="text-center last-col-row">{{product.name}}</td>
+                <td class="text-center last-col-row"> {{product.amount}}</td>
+                <td class="text-center last-col-row">{{product.price}}</td>
+                <td class="text-center last-col-row">{{product.description}}</td>
+                <td class="text-center last-col-row">{{product.date_added}}</td>
+                <td class="text-center last-col-row"> 
                     <a href="{% url 'main:tambah' product.id %}">
-                    <button>
-                        +
-                    </button>
-                </a>
-                </td>
-                <td> 
+                        <button class="btn btn-outline-dark ">
+                            (+) Tambah
+                        </button>
+                    </a>
+                
                     <a href="{% url 'main:kurang' product.id %}">
-                    <button>
-                        -
+                    <button class="btn btn-outline-dark">
+                        (-) Kurang
                     </button>
-                </a>
-                </td>
-                <td> 
+                    </a>
+                
+                    <a href="{% url 'main:edit_product' product.pk %}">
+                        <button class="btn btn-outline-dark">
+                            Edit
+                        </button>
+                    </a>
                     <a href="{% url 'main:delete' product.id %}">
-                    <button>
-                        delete
+                        <button class="btn btn-outline-danger">
+                            delete
+                        </button>
+                    </a>
+                </td>
+
+                {% else %}
+                <td class="text-center">{{product.name}}</td>
+                <td class="text-center"> {{product.amount}}</td>
+                <td class="text-center">{{product.price}}</td>
+                <td class="text-center">{{product.description}}</td>
+                <td class="text-center">{{product.date_added}}</td>
+                <td class="text-center"> 
+                    <a href="{% url 'main:tambah' product.id %}">
+                        <button class="btn btn-outline-dark">
+                            (+) Tambah
+                        </button>
+                    </a>
+                 
+                    <a href="{% url 'main:kurang' product.id %}">
+                    <button class="btn btn-outline-dark">
+                        (-) Kurang
                     </button>
-                </a>
+                    </a>
+                
+                    <a href="{% url 'main:edit_product' product.pk %}">
+                        <button class="btn btn-outline-dark">
+                            Edit
+                        </button>
+                    </a>
+                    <a href="{% url 'main:delete' product.id %}">
+                        <button class="btn btn-outline-danger">
+                            delete
+                        </button>
+                    </a>
                 </td>
             </tr>
-        {% endfor %}
-    </table>
+            {% endif %}
+            {% endfor %}
+        </table>
+        <div class="text-center">
+            <a href="{% url 'main:create_product' %}">
+                <button class="btn btn-outline-dark btn-lg">
+                    Add New Product
+                </button>
+            </a>
+        </div>
+    </div>
+    {% endif %}
     
     <br />
     
-    <a href="{% url 'main:create_product' %}">
-        <button>
-            Add New Product
-        </button>
-    </a>
 
-    <h5>Sesi terakhir login: {{ last_login }}</h5>
-    
-    <a href="{% url 'main:logout' %}">
-        <button>
-            Logout
-        </button>
-    </a>
-    
+    <h6 class="d-flex justify-content-center">Last login: {{ last_login }}</h6>
+
 {% endblock content %}

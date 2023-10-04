@@ -6,29 +6,31 @@
 
 {% block content %}  
 
-<div class = "login">
+<div class="d-flex justify-content-center align-items-center" style="min-height: 100vh;min-width: 100vw;background-color: #F0F0F0;">
+    <div class = "register shadow p-4 mb-5 bg-body rounded">
+        
+        <h1 class="text-center">Register</h1>  
+        <br>
     
-    <h1>Register</h1>  
-
-        <form method="POST" >  
-            {% csrf_token %}  
-            <table>  
-                {{ form.as_table }}  
-                <tr>  
-                    <td></td>
-                    <td><input type="submit" name="submit" value="Daftar"/></td>  
-                </tr>  
-            </table>  
-        </form>
-
-    {% if messages %}  
-        <ul>   
-            {% for message in messages %}  
-                <li>{{ message }}</li>  
-                {% endfor %}  
-        </ul>   
-    {% endif %}
-
-</div>  
+            <form method="POST" >  
+                {% csrf_token %}  
+                <table>  
+                    {{ form.as_table }}  
+                </table>  
+                <div class="text-center" style="margin: 0.6rem; margin-top: 0.8rem;">
+                    <input class="btn login_btn btn-outline-dark" type="submit" name="submit" value="Create Account"/></td>  
+                </div>  
+            </form>
+    
+        {% if messages %}  
+            <ul>   
+                {% for message in messages %}  
+                    <li>{{ message }}</li>  
+                    {% endfor %}  
+            </ul>   
+        {% endif %}
+    
+    </div>  
+</div>
 
 {% endblock content %}

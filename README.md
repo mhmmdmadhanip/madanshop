@@ -268,3 +268,104 @@ Keamanan dari penggunaan cookies bergantung pada bagaimana cara kita mengimpleme
         - `response.delete_cookie('last_login')`
         - `return response`
     - Pada file `main.html` tanmbahkan kode `<h5>Sesi terakhir login: {{ last_login }}</h5>` untuk menampilkan kapan user terakhir login.
+
+
+## Jawaban dari Tugas 5
+
+### Jelaskan manfaat dari setiap element selector dan kapan waktu yang tepat untuk menggunakannya.
+
+- Universal Selector (*):
+
+    - Manfaat: Memungkinkan Anda memilih semua elemen pada halaman.
+    - Kapan Digunakan: Berguna untuk mengatur beberapa properti umum pada halaman.
+
+
+- Type Selector (Element Selector):
+
+    - Manfaat: Memilih semua elemen dengan jenis tertentu (seperti <div>, <p>, dll.).
+    - Kapan Digunakan: Ketika Anda ingin mengatur properti umum untuk suatu jenis elemen.
+
+- Class Selector (.classname):
+
+    - Manfaat: Memilih elemen dengan atribut class tertentu.
+    - Kapan Digunakan: Ketik Anda ingin menerapkan gaya yang sama pada beberapa elemen yang memiliki kelas yang sama.
+
+- ID Selector (#id):
+
+    - Manfaat: Memilih elemen dengan atribut id tertentu.
+    - Kapan Digunakan: Jarang digunakan karena ID seharusnya unik di halaman.
+
+- Descendant Selector (Space):
+    - Manfaat: Memilih elemen yang adalah keturunan dari elemen lain.
+    - Kapan Digunakan: Saat Anda ingin menargetkan elemen yang berada dalam elemen lain.
+
+- Child Selector (>):
+    - Manfaat: Memilih elemen yang merupakan anak langsung dari elemen lain.
+    - Kapan Digunakan: Ketika Anda ingin menargetkan elemen yang langsung di dalam elemen lain.
+
+- Adjacent Sibling Selector (+):
+
+    - Manfaat: Memilih elemen yang menjadi saudara sejajar langsung dari elemen lain.
+    - Kapan Digunakan: Ketika Anda ingin menargetkan elemen yang berada tepat setelah elemen lain.
+
+- General Sibling Selector (~):
+
+    - Manfaat: Memilih elemen yang menjadi saudara sejajar dari elemen lain.
+    - Kapan Digunakan: Ketika Anda ingin menargetkan elemen yang berhubungan sejajar dari elemen lain, tidak peduli seberapa jauh mereka berada.
+
+
+### Jelaskan HTML5 Tag yang kamu ketahui.
+- `<head>`:
+Fungsi: Mengandung informasi tentang dokumen, seperti judul, meta-data, dan tautan ke berkas CSS atau JavaScript.
+
+- `<title>`:
+Fungsi: Menentukan judul halaman web yang akan ditampilkan di jendela atau tab browser.
+
+- `<a>`:
+Fungsi: Menentukan tautan ke halaman atau sumber daya eksternal.
+
+- `<div>`:
+Fungsi: Membuat kontainer blok untuk mengelompokkan dan memformat elemen.
+
+- `<form>`, `<input>`, `<button>`:
+
+Fungsi: Membuat formulir untuk mengumpulkan data dari pengguna.
+
+### Jelaskan perbedaan antara margin dan padding.
+
+- Margin adalah ruang di luar elemen, yang mempengaruhi seberapa jauh elemen tersebut dari elemen lain.
+
+- Padding adalah ruang di dalam elemen, yang mempengaruhi seberapa jauh konten dari tepi elemen.
+
+### Jelaskan perbedaan antara framework CSS Tailwind dan Bootstrap. Kapan sebaiknya kita menggunakan Bootstrap daripada Tailwind, dan sebaliknya?
+
+Tailwind adalah kerangka kerja yang menerapkan pendekatan "utility-first," di mana pengguna membangun desain dengan menggabungkan kelas utilitas ke dalam elemen HTML. Ini menyediakan fleksibilitas dan kemampuan kustomisasi yang tinggi, tetapi juga memerlukan pemahaman yang lebih dalam. Bootstrap, di sisi lain, menyediakan sejumlah besar kelas CSS dan komponen yang telah dirancang sebelumnya. Ini memberikan stabilitas dan kemudahan penggunaan, tetapi dapat memiliki keterbatasan dalam fleksibilitas desain yang unik. Tailwind digunakan saat kita memiliki design yang memerlukan kustomisasi yang banyak, sedangkan bootstrap digunakan ketika kita ingin membuat web yang simple.
+
+### Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
+
+- Kustomisasi Login Page
+    - Membuat dua div baru untuk page login dan untuk form.
+    - Membuat div untuk form menjadi center.
+    - Menambahkan form-controll untuk password dan username.
+    - Mengubah style dari button login dan link register menggunakan bootstrap.
+
+- Kustomisasi Register Page
+    - Membuat dua div baru untuk page register dan untuk form.
+    - Membuat div untuk form menjadi center.
+    - Mengubah style dari button register menggunakan bootstrap.
+
+- Kustomisasi Create Product Page
+    - Membuat dua div baru untuk page create product dan untuk form.
+    - Membuat div untuk form menjadi center.
+    - Menambahkan form control untuk semua product di file forms.py.
+    - Menambahkan back button.
+    - Mengubah style dari button dengan menggunakan bootstrap.
+
+- Kustomisasi Main Page
+    - Membuat Navbar menggunakan bootstrap.
+    - Menambahkan logo dan dropdown ke navbar.
+    - Memindahkan button logout ke dropdown.
+    - Memindahkan tulisan last login ke tengah bawah halaman.
+    - Membuat teks yang berbeda saat pengguna tidak memiliki produk untuk ditampilkan.
+    - Mengkustomisasi table menggunakan bootstrap.
+    - Menambahkan if else untuk kustomisasi last row table

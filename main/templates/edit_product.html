@@ -1,18 +1,21 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
+
+{% load static %}
 
 {% block content %}
+
 <div class = "d-flex justify-content-center align-items-center" style="min-height: 100vh;min-width: 100vw;background-color: #F0F0F0;">
     <div class="login shadow p-4 mb-5 bg-body rounded">
-        <h1 class="text-center">Add New Product</h1>
+        <h1 class="text-center">Edit Product</h1>
         <br>
-
+        
         <form method="POST">
             {% csrf_token %}
             <table>
                 {{ form.as_table }}
             </table>
             <div class="text-center" style="margin: 1rem 0 0 0;"> 
-                <input class="btn btn-outline-dark" type="submit" value="Add Product"/>
+                <input class="btn login_btn btn-outline-dark" type="submit" value="Edit Product"/>
             </div>
         </form>
         <div class="text-center" style="margin-top: 0.6rem;">
@@ -24,6 +27,5 @@
         </div>
     </div>
 </div>
-
 
 {% endblock %}
