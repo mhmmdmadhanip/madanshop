@@ -178,3 +178,246 @@ JSON sering digunakan dalam pertukaran data antara aplikasi web modern karena ke
 <img src='/Assets/json.png'>
 <img src='/Assets/xml_id.png'>
 <img src='/Assets/json_id.png'>
+
+
+## Jawaban Soal Tugas 4
+
+### Apa itu Django `UserCreationForm`, dan jelaskan apa kelebihan dan kekurangannya?
+
+`UserCreationForm` adalah form bawaan dari Django yang dapat memudahkan kita dalam pembuatan form untuk pendaftaran pengguna dalam web app. Dengan menggunakan `UserCreationForm` pengguna dimungkinkan untuk mengisi informasi-informasi yang diperlukan, seperti username dan password.
+- Kelebihan `UserCreationForm`:
+    - Sangat Mudah untuk Digunakan: Para developer tidak perlu membuat form dari awal dan dapat membuat form register hanya dengan menggunakan form bawaan dari Django ini.
+    - Validasi Otomatis: `UserCreationForm` memiliki ketentuan-ketentuannya sendiri untuk mengisi username dan password pengguna. Kita tidak perlu memvalidasi lagi apa username dan password yang diinput oleh pengguna.
+    - Integrasi dengan Django Authentication System: Karena `UserCreationForm` adalah form bawaan dari Django itu sendiri, jadi `UserCreationForm` dapat digunakan bersamaan dengan Django Authentication System.
+
+- Kekurangan `UserCreationForm`:
+    - Kurang Fleksibel: `UserCreationForm` susah untuk dikustomisasi, sehingga jika kita memiliki persyaratan pendaftaran pengguna yang lebih khusus atau kompleks, maka Djang `UserCreationForm` tidak dapat memenuhi kebutuhan tersebut.
+    - Tidak Ada Fungsi Tambahan: Form ini hanya berfokus pada pendaftara pengguna dan autentikasi awal. Sehingga jika membutuhkan logika pendaftaran lebih, hal itu harus kita implementasikan secara terpisah.
+    - Kurangnya Keamanan: Form ini memberikan autentikasi dasar dan validasi, tetapi untuk keamanan lebih, kita harus menambahkan hal itu sendiri.
+
+### Apa perbedaan antara autentikasi dan otorisasi dalam konteks Django, dan mengapa keduanya penting?
+
+Autentikasi adalah proses dimana kita harus memverifikasi identitas pengguna. Dalam proses autentikasi, kita harus memvalidasi bahwa pengguna adalah orang yang sudah terdaftar pada web app kita. Biasanya, Autentiaksi dilakukan dengan memasukkan username dan password dari pengguna, lalu kita memvalidasi itu.
+
+Otorisasi adlah proses menentukan hak akses dan izin pengguna yang sudah ter-autentikasi. Hal ini akan menentukan, apa-apa saja yang dapat dialkukan pengguna dan tidak bisa dilakukan. Contohnya, saat kita masuk di suatu aplikasi sebagai user, biasanya kita bisa mengubah-ubah username kita atau password kita, tetapi kita biasanya tidak bisa mengubah nomor telepon atau email yang sudah terverifikasi.
+
+Autentikasi dan otorisasi ini sangat penting, karena keduanya akan memastikan keamanan dari web app kita. Kita juga dapat menjaga privasi data pengguna, dengan memastikan bahwa pengguna hanya dapat melihat atau memanipulasi data yang sesuai dengan hak mereka. Kita juga dapat kepentingan untuk banyak peran yang berbeda.
+
+### Apa itu cookies dalam konteks aplikasi web, dan bagaimana Django menggunakan cookies untuk mengelola data sesi pengguna?
+
+Cookies di web app adalah bagian kecil dari data yang disimpan di perangkat pengguna itu. Data-data yang disimpan dapat diakses lagi saat pengguna kembali mengunjungi website itu di kemudian hari.
+
+Django menggunakan cookies untuk mengelola data sesi pengguna dengan cara berikut: 
+- Membuat sesi pengguna: Djangp akan menciptakan sesi pengguna dan ID sesi yang unik saat pengguna mencoba mengakses web app.
+- Penyimpanan Data Sesi: Django akan menyimpan info sesi yang berjalan ke dalam cookies.
+- Mengakses Data Sesi: Django akan membaca cookies pengguna pada permintaan-permintaan yang akan datang.
+- Pembaruan Data Sesi: Django dapat mengubah data yang ada pada cookies menjadi data terbaru.
+- Pengakhiran sesi: Django akan membersihkan data sesi saat pengguna keluar atau sesi dari pengguna sudah berakhir.
+
+### Apakah penggunaan cookies aman secara default dalam pengembangan web, atau apakah ada risiko potensial yang harus diwaspadai?
+
+Keamanan dari penggunaan cookies bergantung pada bagaimana cara kita mengimplementasikan cookies itu sendiri. Apbila kita mengimplementasikan dengan benar, penggunaan cookies secara default akan aman. Namun, penggunaan cookies dapat menimbulkan risiko yang banyak, seperti pelanggaran privasi, pencurian cookies, serta sangat rentan terhadap serangan.
+
+### Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
+
+- Mengimplenentasikan fungsi registrasi, login, dan logout.
+    - REGISTER
+        - Mengimport `redirect`, `UserCreationForm`, dan `messages` pada file views.py yang ada pada direktori main.
+        - Membuat fungsi `register` pada `views.py` untuk form registrasi dan menghasilkan akun baru ketika data disubmit dari form.
+        - Membuat file `register.html` pada `main/templates` untuk membuat interface saat ingin membuat akun.
+        - Mengimport fungsi `register` ke `urls.py` yang ada di direktori main.
+        - Menambahkan path URL untuk register pada `urls.py`
+
+    - LOGIN
+        - Mengimport `authenticate` dan `login` pada file views.py yang ada pada direktori main.
+        - Membuat fungsi `login_user` pada `views.py` untuk mengautentikasi user yang akan login.
+        - Membuat file `login.html` pada `main/templates` untuk membuat interface saat pengguna ingin login.
+        - Mengimport fungsi `login_user` ke `urls.py` yang ada di direktori main.
+        - Menambahkan path URL untuk login_user pada `urls.py`
+
+    - LOGOUT
+        - Import `logout` pada file `views.py` yang ada pada di direktori main.
+        - Membuat fungsi `logout_user` pada `views.py` untuk mengautentikas user yang ingin melakukan logout.
+        - Menambahkan button logout pada `templates/main.html`.
+        - Mengimport fungsi `logout_user` ke `urls.py` yang ada di direktori main.
+        - Menambahkan path URL untuk logout_user pada `urls.py`.
+
+- Menghubungkan model `Item` dengan `User`.
+    - Import `user` pada file `models.py`.
+    - Menambahkan `ForeignKey` pada `Product` di file `models.py` untuk menghubungkan barang dengan user.
+    - Ubah fungsi `create_product` yang ada pada `models.py`.
+    - Menambahkan parameter `commit = False` pada variable `prodcuts` yang berfungsi agar Django tidak langsung menyimpan objek ke database.
+    - Isi field `user` dengan objek `User` dari reeturn value `request.user` untuk menandakan bahwa objek tersebut dimiliki pengguna yang sedang login.
+
+- Membuat dua akun pengguna dengan masing-masing tiga dummy data menggunakan model yang telah dibuat pada aplikasi sebelumnya untuk setiap akun di lokal.
+<img src='/Assets/akun_1.png'>
+<img src='/Assets/akun_2.png'>
+
+- Menampilkan detail informasi pengguna yang sedang logged in seperti username dan menerapkan cookies seperti last login pada halaman utama aplikasi.
+
+- Mengimport `HttpResponseRedirect`, `reverse`, dan `datetime` pada file `models.py`.
+- Menambahkan kode pada fungsi `login_user` untuk melihat status last_login.
+    - Edit blok `if user is not None` dengan menambahkan kode berikut:
+        - `login(request, user)`
+        - `response = HttpResponseRedirect(reverse("main:show_main))`
+        - `response.set_cookie('last_login', str(datetime.datetime.now()))`
+        - `return response`
+    - Pada fungsi `show_main` tambahkan `'last_login': request.COOKIES['last_login']` pada variabel `context`.
+    - Ubah fungsi `logout_user` dengan menambahkan kode:
+        - `response = HttpResponseRedirect(reverse('main:login'))`
+        - `response.delete_cookie('last_login')`
+        - `return response`
+    - Pada file `main.html` tanmbahkan kode `<h5>Sesi terakhir login: {{ last_login }}</h5>` untuk menampilkan kapan user terakhir login.
+
+
+## Jawaban dari Tugas 5
+
+### Jelaskan manfaat dari setiap element selector dan kapan waktu yang tepat untuk menggunakannya.
+
+- Universal Selector (*):
+
+    - Manfaat: Memungkinkan Anda memilih semua elemen pada halaman.
+    - Kapan Digunakan: Berguna untuk mengatur beberapa properti umum pada halaman.
+
+
+- Type Selector (Element Selector):
+
+    - Manfaat: Memilih semua elemen dengan jenis tertentu (seperti <div>, <p>, dll.).
+    - Kapan Digunakan: Ketika Anda ingin mengatur properti umum untuk suatu jenis elemen.
+
+- Class Selector (.classname):
+
+    - Manfaat: Memilih elemen dengan atribut class tertentu.
+    - Kapan Digunakan: Ketik Anda ingin menerapkan gaya yang sama pada beberapa elemen yang memiliki kelas yang sama.
+
+- ID Selector (#id):
+
+    - Manfaat: Memilih elemen dengan atribut id tertentu.
+    - Kapan Digunakan: Jarang digunakan karena ID seharusnya unik di halaman.
+
+- Descendant Selector (Space):
+    - Manfaat: Memilih elemen yang adalah keturunan dari elemen lain.
+    - Kapan Digunakan: Saat Anda ingin menargetkan elemen yang berada dalam elemen lain.
+
+- Child Selector (>):
+    - Manfaat: Memilih elemen yang merupakan anak langsung dari elemen lain.
+    - Kapan Digunakan: Ketika Anda ingin menargetkan elemen yang langsung di dalam elemen lain.
+
+- Adjacent Sibling Selector (+):
+
+    - Manfaat: Memilih elemen yang menjadi saudara sejajar langsung dari elemen lain.
+    - Kapan Digunakan: Ketika Anda ingin menargetkan elemen yang berada tepat setelah elemen lain.
+
+- General Sibling Selector (~):
+
+    - Manfaat: Memilih elemen yang menjadi saudara sejajar dari elemen lain.
+    - Kapan Digunakan: Ketika Anda ingin menargetkan elemen yang berhubungan sejajar dari elemen lain, tidak peduli seberapa jauh mereka berada.
+
+
+### Jelaskan HTML5 Tag yang kamu ketahui.
+- `<head>`:
+Fungsi: Mengandung informasi tentang dokumen, seperti judul, meta-data, dan tautan ke berkas CSS atau JavaScript.
+
+- `<title>`:
+Fungsi: Menentukan judul halaman web yang akan ditampilkan di jendela atau tab browser.
+
+- `<a>`:
+Fungsi: Menentukan tautan ke halaman atau sumber daya eksternal.
+
+- `<div>`:
+Fungsi: Membuat kontainer blok untuk mengelompokkan dan memformat elemen.
+
+- `<form>`, `<input>`, `<button>`:
+
+Fungsi: Membuat formulir untuk mengumpulkan data dari pengguna.
+
+### Jelaskan perbedaan antara margin dan padding.
+
+- Margin adalah ruang di luar elemen, yang mempengaruhi seberapa jauh elemen tersebut dari elemen lain.
+
+- Padding adalah ruang di dalam elemen, yang mempengaruhi seberapa jauh konten dari tepi elemen.
+
+### Jelaskan perbedaan antara framework CSS Tailwind dan Bootstrap. Kapan sebaiknya kita menggunakan Bootstrap daripada Tailwind, dan sebaliknya?
+
+Tailwind adalah kerangka kerja yang menerapkan pendekatan "utility-first," di mana pengguna membangun desain dengan menggabungkan kelas utilitas ke dalam elemen HTML. Ini menyediakan fleksibilitas dan kemampuan kustomisasi yang tinggi, tetapi juga memerlukan pemahaman yang lebih dalam. Bootstrap, di sisi lain, menyediakan sejumlah besar kelas CSS dan komponen yang telah dirancang sebelumnya. Ini memberikan stabilitas dan kemudahan penggunaan, tetapi dapat memiliki keterbatasan dalam fleksibilitas desain yang unik. Tailwind digunakan saat kita memiliki design yang memerlukan kustomisasi yang banyak, sedangkan bootstrap digunakan ketika kita ingin membuat web yang simple.
+
+### Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
+
+- Kustomisasi Login Page
+    - Membuat dua div baru untuk page login dan untuk form.
+    - Membuat div untuk form menjadi center.
+    - Menambahkan form-controll untuk password dan username.
+    - Mengubah style dari button login dan link register menggunakan bootstrap.
+
+- Kustomisasi Register Page
+    - Membuat dua div baru untuk page register dan untuk form.
+    - Membuat div untuk form menjadi center.
+    - Mengubah style dari button register menggunakan bootstrap.
+
+- Kustomisasi Create Product Page
+    - Membuat dua div baru untuk page create product dan untuk form.
+    - Membuat div untuk form menjadi center.
+    - Menambahkan form control untuk semua product di file forms.py.
+    - Menambahkan back button.
+    - Mengubah style dari button dengan menggunakan bootstrap.
+
+- Kustomisasi Main Page
+    - Membuat Navbar menggunakan bootstrap.
+    - Menambahkan logo dan dropdown ke navbar.
+    - Memindahkan button logout ke dropdown.
+    - Memindahkan tulisan last login ke tengah bawah halaman.
+    - Membuat teks yang berbeda saat pengguna tidak memiliki produk untuk ditampilkan.
+    - Mengkustomisasi table menggunakan bootstrap.
+    - Menambahkan if else untuk kustomisasi last row table
+
+## Jawaban Soal Tugas 6
+
+### Jelaskan perbedaan antara asynchronous programming dengan synchronous programming.
+1. Asynchronous Programming:
+    - Respon lebih cepat
+    - Menggubakan callback (await/async) untuk mengatur operasi asinkron
+    - Operasi dilakukan secara independen
+2. Synchronous Programming:
+    - Respon lebih lambat (Harus menunggu operasi sebelumnya selesai)
+    - Tidak membutuhkan setup khusus seperti callback
+    - Operasi dilakukan dengan berurutan
+
+### Dalam penerapan JavaScript dan AJAX, terdapat penerapan paradigma event-driven programming. Jelaskan maksud dari paradigma tersebut dan sebutkan salah satu contoh penerapannya pada tugas ini.
+Paradigma event-driven programming adalah pendekatan dalam pemrograman di mana eksekusi program dipicu oleh berbagai peristiwa yang terjadi selama runtime. Program tidak berjalan secara linier, melainkan menunggu dan merespons peristiwa tertentu dengan menjalankan blok kode atau fungsi khusus. Contohnya, dalam kode saya, ketika pengguna mengklik tombol "Add Product", hal ini akan memicu fungsi addProduct() untuk dieksekusi. Begitu juga dengan fungsi-fungsi lain seperti tambahProduct(), kurangProduct(), editProduct(), dan deleteProduct(), yang dipicu oleh interaksi pengguna terhadap elemen-elemen tertentu dalam halaman web. Dengan paradigma ini, program Anda berfungsi secara responsif terhadap tindakan pengguna dan peristiwa lainnya, meningkatkan interaktivitas dan pengalaman pengguna pada aplikasi web Anda.
+
+### Jelaskan penerapan asynchronous programming pada AJAX.
+Asynchronous programming pada AJAX memungkinkan eksekusi operasi IO seperti pengambilan data dari server atau tindakan jaringan lainnya tanpa menghentikan eksekusi program utama. Dengan menggunakan async dan await, kita dapat menandai fungsi-fungsi yang terlibat dalam operasi asynchronous. Contoh, penggunaan fetch dalam fungsi getProducts memungkinkan program untuk menunggu respons dari server sebelum melanjutkan ke langkah selanjutnya. Hal serupa terjadi pada fungsi addProduct, di mana await digunakan untuk menunggu hasil dari pengiriman data sebelum melakukan pembaruan produk dengan memanggil fungsi refreshProducts. Dengan demikian, asynchronous programming pada AJAX memungkinkan aplikasi web untuk tetap responsif dan efisien dalam menanggapi tindakan pengguna atau operasi jaringan yang memakan waktu.
+
+### Pada PBP kali ini, penerapan AJAX dilakukan dengan menggunakan Fetch API daripada library jQuery. Bandingkanlah kedua teknologi tersebut dan tuliskan pendapat kamu teknologi manakah yang lebih baik untuk digunakan.
+
+1. Fetch API
+    - Terfokus pada tugas-tugas jaringan, tidak menyediakan banyak fitur tambahan di luar itu.
+    - Lebih cepat dalam pengambilan dan pengiriman data karena tidak memerlukan pemuatan pustaka tambahan.
+    - Lebih baru dan mungkin memerlukan polyfill atau pengaturan khusus untuk mendukung browser lama.
+
+2. jQuery
+    - Menyediakan banyak fungsi tambahan untuk manipulasi DOM, animasi, event handling, dan banyak lagi, membuatnya lebih komprehensif.
+    - Meskipun sangat dioptimalkan, bisa sedikit lebih lambat dibandingkan dengan Fetch API dalam pengambilan dan pengiriman data karena pemuatan pustaka tambahan.
+    - Didesain untuk bekerja dengan baik di berbagai browser, termasuk versi lama. Ini mengatasi banyak perbedaan lintas browser.
+
+Pilihan antara Fetch API dan jQuery tergantung pada kebutuhan proyek dan preferensi pembuat web. Fetch API adalah pendekatan modern dan bawaan dari JavaScript, yang menawarkan performa tinggi dan sintaksis yang bersih berbasis Promise. JQuery baik untuk proyek-proyek baru yang fokus pada efisiensi dan tidak memerlukan dukungan browser lama. Ini adalah pilihan yang solid jika Anda perlu mendukung berbagai browser atau memanfaatkan berbagai fitur tambahan di luar AJAX. Jadi, pemilihan antara keduanya akan sangat tergantung pada kebutuhan dan lingkungan pengembangan proyek tertentu.
+
+### Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
+
+1. AJAX GET
+    - Mengubah bentuk tampilan data menjadi cards
+    - Membuat method get_item yang mereturn data dalam bentuk json
+    - Membuat method getProducts yang mengubah data dalam bentuk json menjadi objek JavaScript
+    - Membuat method refreshProduct untuk menampilkan product setiap ada method yang dilakukan
+
+2. AJAX POST
+    - Membuat form di main.html untuk tambah produk baru menggunakan ajax
+    - Membuat button yang akan memanggil form yang sudah dibuat
+    - Membuat method baru dengan menggunakan AJAX di views.py yang akan digunakan untuk menambahkan produk ke database
+    - membuat path dan routing
+    - Menghubungkan form yang dibuat dengan method add product
+
+3. Melakukan perintah collectstatic
+    - Menambahkan kode `STATIC_ROOT = os.path.join(BASE_DIR, 'static')` di `settings.py`
+    - Menjalankan `python manage.py collectstatic` pada terminal
+    

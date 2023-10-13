@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+    <title>Register</title>
+{% endblock meta %}
+
+{% block content %}  
+
+<div class="d-flex justify-content-center align-items-center" style="min-height: 100vh;min-width: 100vw;background-color: #F0F0F0;">
+    <div class = "register shadow p-4 mb-5 bg-body rounded">
+        
+        <h1 class="text-center">Register</h1>  
+        <br>
+    
+            <form method="POST" >  
+                {% csrf_token %}  
+                <table>  
+                    {{ form.as_table }}  
+                </table>  
+                <div class="text-center" style="margin: 0.6rem; margin-top: 0.8rem;">
+                    <input class="btn login_btn btn-outline-dark" type="submit" name="submit" value="Create Account"/></td>  
+                </div>  
+            </form>
+    
+        {% if messages %}  
+            <ul>   
+                {% for message in messages %}  
+                    <li>{{ message }}</li>  
+                    {% endfor %}  
+            </ul>   
+        {% endif %}
+        <p class="text-center">Already have an account? <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="{% url 'main:login' %}">Login</a></p>
+    </div>  
+</div>
+
+{% endblock content %}

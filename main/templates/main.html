@@ -1,42 +1,214 @@
 {% extends 'base.html' %}
+{% load static %} 
 
 {% block content %}
-    <h1>{{ appname }}</h1>
-
-    <h5>Name:</h5>
-    <p>{{ name }}</p>
-
-    <h5>Class:</h5>
-    <p>{{ class }}</p>
-
-    <table>
-        <tr>
-            <th>Name</th>
-            <th>Amount</th>
-            <th>Price</th>
-            <th>Description</th>
-            <th>Date Added</th>
-        </tr>
-    
-        {% comment %} Berikut cara memperlihatkan data produk di bawah baris ini {% endcomment %}
-    
-        {% for product in products %}
-            <tr>
-                <td>{{product.name}}</td>
-                <td> {{product.amount}}</td>
-                <td>{{product.price}}</td>
-                <td>{{product.description}}</td>
-                <td>{{product.date_added}}</td>
-            </tr>
-        {% endfor %}
-    </table>
-    
-    <br />
-    
-    <a href="{% url 'main:create_product' %}">
-        <button>
-            Add New Product
+<style>
+    .last-card{
+        background-color: #FFF5E0 !important;
+    }
+</style>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+        <a class="navbar-brand text fs-4" href="#"><img src="{% static 'images/logomm.png' %}" style="width: 10%; margin-right: 0.8rem;">Madanshop</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
         </button>
-    </a>
+        <div class="collapse navbar-collapse d-flex justify-content-center" id="navbarNavDropdown">
+                <div class="nav-item dropdown ms-auto d-flex justify-content-center" style="margin-right: 3rem;">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    {{ name }} - {{ class }}
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="{% url 'main:logout' %}">
+                                <button  class="btn">
+                                    Logout
+                                </button>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Product</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="form" onsubmit="return false;">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="name" class="col-form-label">Name:</label>
+                            <input type="text" class="form-control" id="name" name="name"></input>
+                        </div>
+                        <div class="mb-3">
+                            <label for="name" class="col-form-label">Amount:</label>
+                            <input type="text" class="form-control" id="amount" name="amount"></input>
+                        </div>
+                        <div class="mb-3">
+                            <label for="price" class="col-form-label">Price:</label>
+                            <input type="number" class="form-control" id="price" name="price"></input>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="col-form-label">Description:</label>
+                            <textarea class="form-control" id="description" name="description"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="button_add" data-bs-dismiss="modal">Add Product</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class = "mx-3 my-4" style="min-height: 76vh;">    
+        <div class="container ">
+            <div class="row" id="product_cards">
+              <!-- Cards will be dynamically generated here -->
+            </div>
+        </div>
+    </div>
+    <br />
+
+    <h6 class="d-flex justify-content-center">Last login: {{ last_login }}</h6>
+
+    <script>
+        async function getProducts() {
+            return fetch("{% url 'main:get_product_json' %}").then((res) => res.json())
+        }
+
+        async function refreshProducts() {
+    const products = await getProducts();
+    const productCardsContainer = document.getElementById("product_cards");
+    productCardsContainer.innerHTML = "";
+
+    if (products.length === 0) {
+        productCardsContainer.innerHTML = `
+                <div class="card-body text-center">
+                    <h5 class="card-title">No Product Yet!</h5>
+                    <br>
+                    <button type="button" class="btn btn-outline-dark btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Your First Product Here!</button>
+                </div>
+        `;
+    } else {
+        console.log("masukl=")
+        products.forEach((item, index) => {
+            let cardClass = "card"; // Default class
+
+            if (index === products.length - 1) {
+                cardClass = "card last-card"; // Add a different class for the last card
+            }
+            productCardsContainer.innerHTML += `
+        <div class="col-md-4 mb-4">
+            <div class="${cardClass}">
+                <div class="card-body">
+            <h5 class="card-title">${item.fields.name}</h5>
+            <p class="card-text">Amount: ${item.fields.amount}</p>
+            <p class="card-text">Price: ${item.fields.price}</p>
+            <p class="card-text">Description: ${item.fields.description}</p>
+            <p class="card-text">Date Added: ${item.fields.date_added}</p>
+            <div class="text-center">
+                <button onClick="tambahProduct(${item.pk})" class="btn btn-outline-dark btn-md tambah-btn">Tambah</button>
+                <button onClick="kurangProduct(${item.pk})" class="btn btn-outline-dark btn-md kurang-btn">Kurang</button>
+                <button onClick="editProduct(${item.pk})" class="btn btn-outline-dark btn-md edit-btn">Edit</button>
+                <button onClick="deleteProduct(${item.pk})" class="btn btn-outline-dark btn-md delete-btn">Delete</button>
+                </div>
+                </div>
+                </div>
+                </div>
+                `;
+            });
+            
+            productCardsContainer.innerHTML += `<div class="text-center">
+            <button type="button" class="btn btn-outline-dark btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Add Product
+            </button>
+        </div> `
+    }
+}
+
+
+    function addProduct() {
+        const csrf_token = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+        fetch("{% url 'main:add_product_ajax' %}", {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": csrf_token
+            },
+            body: new FormData(document.querySelector('#form'))
+        }).then(refreshProducts)
+
+        document.getElementById("form").reset()
+        return false
+    }
+
+    function tambahProduct(id) {
+        const csrf_token = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+        const url = `/tambah/${id}`;
+
+        fetch(url, {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": csrf_token
+            }
+        }).then(refreshProducts);
+        return false;
+    }
+
+    function kurangProduct(id) {
+        const csrf_token = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+        const url = `/kurang/${id}`;
+
+        fetch(url, {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": csrf_token
+            }
+        }).then(refreshProducts);
+        return false
+    }   
+
+    function editProduct(id) {
+        const csrf_token = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+        const url = `/edit-product/${id}`;
+        fetch(url, {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": csrf_token
+            }
+        }).then(refreshProducts);
+        return false;
+    }
+
+    function deleteProduct(id) {
+        const csrf_token = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+        console.log("tess22")
+        fetch(`/delete-product-ajax/${id}`, {
+            method: 'POST',
+            headers: {
+                "X-CSRFToken": csrf_token
+            }
+        }).then(refreshProducts);
     
+        return false
+    }
+
+
+
+    document.getElementById("button_add").onclick = addProduct
+    document.getElementsByClassName(".tambah-btn").onclick = tambahProduct
+    document.getElementsByClassName(".kurang-btn").onclick = kurangProduct
+    document.getElementsByClassName(".edit-btn").onclick = editProduct
+    document.getElementsByClassName(".delete-btn").onclick = deleteProduct
+    
+    refreshProducts()
+
+    </script>
 {% endblock content %}
