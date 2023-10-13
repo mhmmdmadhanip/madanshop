@@ -3,6 +3,7 @@
 
 ## Link Aplikasi 
 Link Adaptable: [Madanshop](https://madanshop.adaptable.app/main/)
+Link Deploy: (http://muhammad-madhani-tugas.pbp.cs.ui.ac.id/)
 
 ## Jawaban Soal Tugas 2
 
