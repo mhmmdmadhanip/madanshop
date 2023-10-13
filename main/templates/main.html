@@ -3,11 +3,7 @@
 
 {% block content %}
 <style>
-    .last-row {
-        background-color: #BF30A3 !important;
-    }
-
-    .last-col-row{
+    .last-card{
         background-color: #FFF5E0 !important;
     }
 </style>
@@ -36,121 +32,183 @@
         </div>
     </nav>
 
-    {% if not products%}
-    <div class="mx-3 my-4" style="min-height: 76vh;">
-        <div class="text-center mx-3 my-4"> 
-            <h3> No Product Yet! </h3>
-        </div>
-        <br>
-        <div class="text-center">
-            <a href="{% url 'main:create_product' %}">
-                <button class="btn btn-outline-dark btn-lg">
-                    Add Your First Product Here!
-                </button>
-            </a>
-        </div>
-    </div >
-    {% endif %}
-    
-    {% if products %}
-    <div class = "mx-3 my-4" style="min-height: 76vh;">    
-        <h3 class="text-center" style="margin: 2rem;"> Products List </h3>
-        <table class="table table-striped">
-            <tr>
-                <th class="text-center">Name</th>
-                <th class="text-center">Amount</th>
-                <th class="text-center">Price</th>
-                <th class="text-center">Description</th>
-                <th class="text-center">Date Added</th>
-                <th class="text-center">Action</th>
-            </tr>
-            
-            {% comment %} Berikut cara memperlihatkan data produk di bawah baris ini {% endcomment %}
-            
-            {% for product in products %}
-            {% if forloop.last %}
-            <tr class="last-row">
-            {% else %}
-            <tr>
-            {% endif %}
-                {% if forloop.last %}
-                <td class="text-center last-col-row">{{product.name}}</td>
-                <td class="text-center last-col-row"> {{product.amount}}</td>
-                <td class="text-center last-col-row">{{product.price}}</td>
-                <td class="text-center last-col-row">{{product.description}}</td>
-                <td class="text-center last-col-row">{{product.date_added}}</td>
-                <td class="text-center last-col-row"> 
-                    <a href="{% url 'main:tambah' product.id %}">
-                        <button class="btn btn-outline-dark ">
-                            (+) Tambah
-                        </button>
-                    </a>
-                
-                    <a href="{% url 'main:kurang' product.id %}">
-                    <button class="btn btn-outline-dark">
-                        (-) Kurang
-                    </button>
-                    </a>
-                
-                    <a href="{% url 'main:edit_product' product.pk %}">
-                        <button class="btn btn-outline-dark">
-                            Edit
-                        </button>
-                    </a>
-                    <a href="{% url 'main:delete' product.id %}">
-                        <button class="btn btn-outline-danger">
-                            delete
-                        </button>
-                    </a>
-                </td>
-
-                {% else %}
-                <td class="text-center">{{product.name}}</td>
-                <td class="text-center"> {{product.amount}}</td>
-                <td class="text-center">{{product.price}}</td>
-                <td class="text-center">{{product.description}}</td>
-                <td class="text-center">{{product.date_added}}</td>
-                <td class="text-center"> 
-                    <a href="{% url 'main:tambah' product.id %}">
-                        <button class="btn btn-outline-dark">
-                            (+) Tambah
-                        </button>
-                    </a>
-                 
-                    <a href="{% url 'main:kurang' product.id %}">
-                    <button class="btn btn-outline-dark">
-                        (-) Kurang
-                    </button>
-                    </a>
-                
-                    <a href="{% url 'main:edit_product' product.pk %}">
-                        <button class="btn btn-outline-dark">
-                            Edit
-                        </button>
-                    </a>
-                    <a href="{% url 'main:delete' product.id %}">
-                        <button class="btn btn-outline-danger">
-                            delete
-                        </button>
-                    </a>
-                </td>
-            </tr>
-            {% endif %}
-            {% endfor %}
-        </table>
-        <div class="text-center">
-            <a href="{% url 'main:create_product' %}">
-                <button class="btn btn-outline-dark btn-lg">
-                    Add New Product
-                </button>
-            </a>
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Product</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="form" onsubmit="return false;">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="name" class="col-form-label">Name:</label>
+                            <input type="text" class="form-control" id="name" name="name"></input>
+                        </div>
+                        <div class="mb-3">
+                            <label for="name" class="col-form-label">Amount:</label>
+                            <input type="text" class="form-control" id="amount" name="amount"></input>
+                        </div>
+                        <div class="mb-3">
+                            <label for="price" class="col-form-label">Price:</label>
+                            <input type="number" class="form-control" id="price" name="price"></input>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="col-form-label">Description:</label>
+                            <textarea class="form-control" id="description" name="description"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="button_add" data-bs-dismiss="modal">Add Product</button>
+                </div>
+            </div>
         </div>
     </div>
-    {% endif %}
-    
+
+    <div class = "mx-3 my-4" style="min-height: 76vh;">    
+        <div class="container ">
+            <div class="row" id="product_cards">
+              <!-- Cards will be dynamically generated here -->
+            </div>
+        </div>
+    </div>
     <br />
-    
 
     <h6 class="d-flex justify-content-center">Last login: {{ last_login }}</h6>
 
+    <script>
+        async function getProducts() {
+            return fetch("{% url 'main:get_product_json' %}").then((res) => res.json())
+        }
+
+        async function refreshProducts() {
+    const products = await getProducts();
+    const productCardsContainer = document.getElementById("product_cards");
+    productCardsContainer.innerHTML = "";
+
+    if (products.length === 0) {
+        productCardsContainer.innerHTML = `
+                <div class="card-body text-center">
+                    <h5 class="card-title">No Product Yet!</h5>
+                    <br>
+                    <button type="button" class="btn btn-outline-dark btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Your First Product Here!</button>
+                </div>
+        `;
+    } else {
+        console.log("masukl=")
+        products.forEach((item, index) => {
+            let cardClass = "card"; // Default class
+
+            if (index === products.length - 1) {
+                cardClass = "card last-card"; // Add a different class for the last card
+            }
+            productCardsContainer.innerHTML += `
+        <div class="col-md-4 mb-4">
+            <div class="${cardClass}">
+                <div class="card-body">
+            <h5 class="card-title">${item.fields.name}</h5>
+            <p class="card-text">Amount: ${item.fields.amount}</p>
+            <p class="card-text">Price: ${item.fields.price}</p>
+            <p class="card-text">Description: ${item.fields.description}</p>
+            <p class="card-text">Date Added: ${item.fields.date_added}</p>
+            <div class="text-center">
+                <button onClick="tambahProduct(${item.pk})" class="btn btn-outline-dark btn-md tambah-btn">Tambah</button>
+                <button onClick="kurangProduct(${item.pk})" class="btn btn-outline-dark btn-md kurang-btn">Kurang</button>
+                <button onClick="editProduct(${item.pk})" class="btn btn-outline-dark btn-md edit-btn">Edit</button>
+                <button onClick="deleteProduct(${item.pk})" class="btn btn-outline-dark btn-md delete-btn">Delete</button>
+                </div>
+                </div>
+                </div>
+                </div>
+                `;
+            });
+            
+            productCardsContainer.innerHTML += `<div class="text-center">
+            <button type="button" class="btn btn-outline-dark btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Add Product
+            </button>
+        </div> `
+    }
+}
+
+
+    function addProduct() {
+        const csrf_token = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+        fetch("{% url 'main:add_product_ajax' %}", {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": csrf_token
+            },
+            body: new FormData(document.querySelector('#form'))
+        }).then(refreshProducts)
+
+        document.getElementById("form").reset()
+        return false
+    }
+
+    function tambahProduct(id) {
+        const csrf_token = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+        const url = `/tambah/${id}`;
+
+        fetch(url, {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": csrf_token
+            }
+        }).then(refreshProducts);
+        return false;
+    }
+
+    function kurangProduct(id) {
+        const csrf_token = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+        const url = `/kurang/${id}`;
+
+        fetch(url, {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": csrf_token
+            }
+        }).then(refreshProducts);
+        return false
+    }   
+
+    function editProduct(id) {
+        const csrf_token = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+        const url = `/edit-product/${id}`;
+        fetch(url, {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": csrf_token
+            }
+        }).then(refreshProducts);
+        return false;
+    }
+
+    function deleteProduct(id) {
+        const csrf_token = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+        console.log("tess22")
+        fetch(`/delete-product-ajax/${id}`, {
+            method: 'POST',
+            headers: {
+                "X-CSRFToken": csrf_token
+            }
+        }).then(refreshProducts);
+    
+        return false
+    }
+
+
+
+    document.getElementById("button_add").onclick = addProduct
+    document.getElementsByClassName(".tambah-btn").onclick = tambahProduct
+    document.getElementsByClassName(".kurang-btn").onclick = kurangProduct
+    document.getElementsByClassName(".edit-btn").onclick = editProduct
+    document.getElementsByClassName(".delete-btn").onclick = deleteProduct
+    
+    refreshProducts()
+
+    </script>
 {% endblock content %}

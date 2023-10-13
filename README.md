@@ -369,3 +369,55 @@ Tailwind adalah kerangka kerja yang menerapkan pendekatan "utility-first," di ma
     - Membuat teks yang berbeda saat pengguna tidak memiliki produk untuk ditampilkan.
     - Mengkustomisasi table menggunakan bootstrap.
     - Menambahkan if else untuk kustomisasi last row table
+
+## Jawaban Soal Tugas 6
+
+### Jelaskan perbedaan antara asynchronous programming dengan synchronous programming.
+1. Asynchronous Programming:
+    - Respon lebih cepat
+    - Menggubakan callback (await/async) untuk mengatur operasi asinkron
+    - Operasi dilakukan secara independen
+2. Synchronous Programming:
+    - Respon lebih lambat (Harus menunggu operasi sebelumnya selesai)
+    - Tidak membutuhkan setup khusus seperti callback
+    - Operasi dilakukan dengan berurutan
+
+### Dalam penerapan JavaScript dan AJAX, terdapat penerapan paradigma event-driven programming. Jelaskan maksud dari paradigma tersebut dan sebutkan salah satu contoh penerapannya pada tugas ini.
+Paradigma event-driven programming adalah pendekatan dalam pemrograman di mana eksekusi program dipicu oleh berbagai peristiwa yang terjadi selama runtime. Program tidak berjalan secara linier, melainkan menunggu dan merespons peristiwa tertentu dengan menjalankan blok kode atau fungsi khusus. Contohnya, dalam kode saya, ketika pengguna mengklik tombol "Add Product", hal ini akan memicu fungsi addProduct() untuk dieksekusi. Begitu juga dengan fungsi-fungsi lain seperti tambahProduct(), kurangProduct(), editProduct(), dan deleteProduct(), yang dipicu oleh interaksi pengguna terhadap elemen-elemen tertentu dalam halaman web. Dengan paradigma ini, program Anda berfungsi secara responsif terhadap tindakan pengguna dan peristiwa lainnya, meningkatkan interaktivitas dan pengalaman pengguna pada aplikasi web Anda.
+
+### Jelaskan penerapan asynchronous programming pada AJAX.
+Asynchronous programming pada AJAX memungkinkan eksekusi operasi IO seperti pengambilan data dari server atau tindakan jaringan lainnya tanpa menghentikan eksekusi program utama. Dengan menggunakan async dan await, kita dapat menandai fungsi-fungsi yang terlibat dalam operasi asynchronous. Contoh, penggunaan fetch dalam fungsi getProducts memungkinkan program untuk menunggu respons dari server sebelum melanjutkan ke langkah selanjutnya. Hal serupa terjadi pada fungsi addProduct, di mana await digunakan untuk menunggu hasil dari pengiriman data sebelum melakukan pembaruan produk dengan memanggil fungsi refreshProducts. Dengan demikian, asynchronous programming pada AJAX memungkinkan aplikasi web untuk tetap responsif dan efisien dalam menanggapi tindakan pengguna atau operasi jaringan yang memakan waktu.
+
+### Pada PBP kali ini, penerapan AJAX dilakukan dengan menggunakan Fetch API daripada library jQuery. Bandingkanlah kedua teknologi tersebut dan tuliskan pendapat kamu teknologi manakah yang lebih baik untuk digunakan.
+
+1. Fetch API
+    - Terfokus pada tugas-tugas jaringan, tidak menyediakan banyak fitur tambahan di luar itu.
+    - Lebih cepat dalam pengambilan dan pengiriman data karena tidak memerlukan pemuatan pustaka tambahan.
+    - Lebih baru dan mungkin memerlukan polyfill atau pengaturan khusus untuk mendukung browser lama.
+
+2. jQuery
+    - Menyediakan banyak fungsi tambahan untuk manipulasi DOM, animasi, event handling, dan banyak lagi, membuatnya lebih komprehensif.
+    - Meskipun sangat dioptimalkan, bisa sedikit lebih lambat dibandingkan dengan Fetch API dalam pengambilan dan pengiriman data karena pemuatan pustaka tambahan.
+    - Didesain untuk bekerja dengan baik di berbagai browser, termasuk versi lama. Ini mengatasi banyak perbedaan lintas browser.
+
+Pilihan antara Fetch API dan jQuery tergantung pada kebutuhan proyek dan preferensi pembuat web. Fetch API adalah pendekatan modern dan bawaan dari JavaScript, yang menawarkan performa tinggi dan sintaksis yang bersih berbasis Promise. JQuery baik untuk proyek-proyek baru yang fokus pada efisiensi dan tidak memerlukan dukungan browser lama. Ini adalah pilihan yang solid jika Anda perlu mendukung berbagai browser atau memanfaatkan berbagai fitur tambahan di luar AJAX. Jadi, pemilihan antara keduanya akan sangat tergantung pada kebutuhan dan lingkungan pengembangan proyek tertentu.
+
+### Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
+
+1. AJAX GET
+    - Mengubah bentuk tampilan data menjadi cards
+    - Membuat method get_item yang mereturn data dalam bentuk json
+    - Membuat method getProducts yang mengubah data dalam bentuk json menjadi objek JavaScript
+    - Membuat method refreshProduct untuk menampilkan product setiap ada method yang dilakukan
+
+2. AJAX POST
+    - Membuat form di main.html untuk tambah produk baru menggunakan ajax
+    - Membuat button yang akan memanggil form yang sudah dibuat
+    - Membuat method baru dengan menggunakan AJAX di views.py yang akan digunakan untuk menambahkan produk ke database
+    - membuat path dan routing
+    - Menghubungkan form yang dibuat dengan method add product
+
+3. Melakukan perintah collectstatic
+    - Menambahkan kode `STATIC_ROOT = os.path.join(BASE_DIR, 'static')` di `settings.py`
+    - Menjalankan `python manage.py collectstatic` pada terminal
+    

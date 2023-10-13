@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseNotFound, HttpResponseRedirect
 from main.forms import ProductForm
 from django.urls import reverse
 from main.models import Product
@@ -14,6 +14,7 @@ from django.contrib.auth.decorators import login_required
 import datetime
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
 
 @login_required(login_url='/login')
 
@@ -114,10 +115,35 @@ def edit_product(request, id):
     product = Product.objects.get(pk = id)
 
     form = ProductForm(request.POST or None, instance=product)
-
     if form.is_valid() and request.method == "POST":
         form.save()
         return HttpResponseRedirect(reverse('main:show_main'))
 
     context = {'form': form}
     return render(request, "edit_product.html", context)
+
+def get_product_json(request):
+    product_item = Product.objects.filter(user=request.user)
+    return HttpResponse(serializers.serialize('json', product_item))
+
+@csrf_exempt
+def add_product_ajax(request):
+    if request.method == 'POST':
+        name = request.POST.get("name")
+        price = request.POST.get("price")
+        description = request.POST.get("description")
+        amount = request.POST.get("amount")
+        user = request.user
+
+        new_product = Product(name=name, price=price, description=description, user=user, amount=amount)
+        new_product.save()
+
+        return HttpResponse(b"CREATED", status=201)
+
+    return HttpResponseNotFound()
+
+@csrf_exempt
+def delete_product_ajax(request, id):
+    product = Product.objects.get(pk=id)
+    product.delete()
+    return HttpResponseRedirect(reverse('main:show_main'))

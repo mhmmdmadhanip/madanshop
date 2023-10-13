@@ -13,5 +13,3 @@ class ProductForm(ModelForm):
         self.fields['amount'].widget.attrs['class'] = 'form-control'
         self.fields['description'].widget.attrs['class'] = 'form-control'
         self.fields['price'].widget.attrs['class'] = 'form-control'
-
-
