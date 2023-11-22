@@ -421,4 +421,5 @@ Pilihan antara Fetch API dan jQuery tergantung pada kebutuhan proyek dan prefere
 3. Melakukan perintah collectstatic
     - Menambahkan kode `STATIC_ROOT = os.path.join(BASE_DIR, 'static')` di `settings.py`
     - Menjalankan `python manage.py collectstatic` pada terminal
-    
+
+Deploy
